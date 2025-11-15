@@ -1,0 +1,276 @@
+
+
+https://mihah-weather-data.s3.eu-north-1.amazonaws.com/weather_lju_anomalies.csv
+
+Username: data-prototype-uploader
+
+Policy name: S3Access_mihah-data
+
+### Public dataset (S3)
+- Anomalies CSV: https://mihah-weather-data.s3.eu-north-1.amazonaws.com/processed/weather_lju_anomalies.csv
+
+Publish from PyCharm:
+```bash
+python tools/s3_publish.py
+
+
+### 3) (Optional) Tighten bucket policy to only this prefix
+If you want to limit public access to just the `processed/` folder:
+
+**S3 → Bucket → Permissions → Bucket policy:**
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadProcessedOnly",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::mihah-weather-data/processed/*"
+    }
+  ]
+}
+
+
+
+When you created the IAM user (for example data-prototype-uploader), AWS didn’t automatically generate an Access Key ID and Secret Access Key — those are programmatic credentials that you must create manually after the user exists.
+
+Let’s do that now 👇
+
+🧭 Where
+
+Go to IAM → Users → data-prototype-uploader → Security credentials tab.
+
+⚙️ What to do
+
+1️⃣ Scroll down to Access keys section.
+2️⃣ Click Create access key.
+3️⃣ When prompted:
+
+Choose “Application running outside AWS” (since you’ll use Python locally).
+
+Click Next → Create access key.
+4️⃣ AWS will now show your credentials:
+
+Access key ID
+
+Secret access key (⚠️ only visible once)
+5️⃣ Click Download .csv file and store it securely (e.g., in your project’s root .aws/credentials folder or a password vault).
+
+✅ Check
+
+Once that’s done, confirm you have:
+
+accessKeyId and secretAccessKey (from the .csv)
+
+Your bucket name (e.g., mihah-weather-data)
+
+Region (e.g., eu-north-1)
+
+Odlično — to bova naredila lepo strukturirano in uporabno tudi kot “deliverable”.
+Spodaj imaš dva ločena dela:
+
+1️⃣ **README.md za Week 3** (povzetek tedna)
+2️⃣ **README_s3_publish.md** (samo za orodje `s3_publish.py`)
+
+---
+
+## 🧾 **1️⃣ README.md – Week 3: Data Publishing & Integration**
+
+```markdown
+# Week 3 — Data Publishing & Integration 🌤️
+
+## Overview
+This week focused on integrating locally processed data with cloud storage and enabling automated publishing.
+The main goal was to upload the processed weather anomaly dataset to an AWS S3 bucket, verify accessibility, and test visualization in BI tools.
+
+---
+
+## Objectives
+- Prepare processed data for publishing (`data/processed/weather_lju_anomalies.csv`)
+- Configure AWS CLI and IAM user credentials
+- Automate S3 uploads via Python (`tools/s3_publish.py`)
+- Verify accessibility via public S3 URLs
+- Test data integration in cloud-based BI tools (Looker Studio)
+
+---
+
+## Key Steps
+### 1. Data Preparation
+Processed dataset:
+```
+
+data/processed/weather_lju_anomalies.csv
+
+````
+Content example:
+```csv
+time,temp_c,rh,date,hour,anomaly,anomaly_score,is_anomaly
+2025-11-11 03:00:00,0.6,100,2025-11-11,3,-1,-1,True
+...
+````
+
+### 2. AWS Configuration
+
+AWS CLI configured with IAM credentials:
+
+```bash
+aws configure
+# AWS Access Key ID: <from .csv file>
+# AWS Secret Access Key: <from .csv file>
+# Default region: eu-north-1
+# Default output format: json
+```
+
+### 3. Automated Upload
+
+Python script: `tools/s3_publish.py`
+Uploads CSV to S3 and verifies success.
+
+Example run:
+
+```bash
+python tools/s3_publish.py
+```
+
+Output:
+
+```
+Uploading data/processed/weather_lju_anomalies.csv → s3://mihah-weather-data/processed/weather_lju_anomalies.csv
+Public URL: https://mihah-weather-data.s3.eu-north-1.amazonaws.com/processed/weather_lju_anomalies.csv
+Verifying public accessibility…
+HTTP 200 OK
+```
+
+### 4. Visualization (Looker Studio)
+
+* Connected via public CSV URL
+* Tested connection via Supermetrics (license limitation encountered)
+* Alternative method: `IMPORTDATA` in Google Sheets
+
+---
+
+## Tools & Libraries
+
+* **pandas** — data handling
+* **boto3**, **awscli** — AWS integration
+* **matplotlib** — local visualization
+* **python-dotenv** — environment variable management
+* **requests** — HTTP verification
+
+---
+
+## Notes
+
+* AWS S3 bucket permissions are managed with IAM (no ACLs required).
+* Public URLs are verified automatically in the script.
+* Future steps: schedule automatic upload with cron or GitHub Actions.
+
+---
+
+## Outcome
+
+✅ Data successfully processed, published, and accessible for integration.
+Next: move to *Week 4 – Data Automation & Dashboarding*.
+
+````
+
+---
+
+## 🧠 **2️⃣ README_s3_publish.md – S3 Upload Script**
+
+```markdown
+# s3_publish.py – Automated S3 CSV Publisher
+
+## Description
+`s3_publish.py` automates the upload of processed CSV datasets from a local path to an AWS S3 bucket.
+It ensures the file exists, uploads it with secure settings, verifies the upload, and opens the public URL in the browser.
+
+---
+
+## Features
+- Validates local file path
+- Uploads to specified S3 bucket and key
+- Automatically sets correct `ContentType` (text/csv)
+- Verifies public accessibility via HTTP request
+- Opens public file URL in the default web browser
+- Provides clear console logs (status, region, checksum)
+
+---
+
+## Usage
+Run the script from project root:
+```bash
+python tools/s3_publish.py
+````
+
+Sample output:
+
+```
+AWS profile info:
+ - AWS_DEFAULT_REGION: None
+ - AWS_REGION        : None
+ - Using boto3 region: eu-north-1
+Local paths:
+ - LOCAL             : data/processed/weather_lju_anomalies.csv
+Uploading ... → s3://mihah-weather-data/processed/weather_lju_anomalies.csv
+Public URL: https://mihah-weather-data.s3.eu-north-1.amazonaws.com/processed/weather_lju_anomalies.csv
+Verifying public accessibility…
+HTTP 200 OK
+```
+
+---
+
+## Configuration
+
+Environment variables are read from AWS CLI settings:
+
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+* `AWS_DEFAULT_REGION`
+
+Local file path and bucket info are defined at the top of the script:
+
+```python
+LOCAL  = "data/processed/weather_lju_anomalies.csv"
+BUCKET = "mihah-weather-data"
+KEY    = "processed/weather_lju_anomalies.csv"
+REGION = "eu-north-1"
+```
+
+---
+
+## Dependencies
+
+Install from `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+Main packages:
+
+* `boto3`
+* `requests`
+* `python-dotenv`
+
+---
+
+## Error Handling
+
+Common issues:
+
+| Error                           | Cause                       | Solution                                       |
+| ------------------------------- | --------------------------- | ---------------------------------------------- |
+| `FileNotFoundError`             | Local file missing          | Ensure path is correct                         |
+| `AccessControlListNotSupported` | Bucket disallows ACLs       | Remove ACLs (use default public access policy) |
+| `Could not connect to endpoint` | Wrong region or credentials | Verify region (`eu-north-1`) and AWS config    |
+
+---
+
+## Example Result
+
+✅ CSV uploaded successfully and publicly available at:
+[https://mihah-weather-data.s3.eu-north-1.amazonaws.com/processed/weather_lju_anomalies.csv](https://mihah-weather-data.s3.eu-north-1.amazonaws.com/processed/weather_lju_anomalies.csv)
+

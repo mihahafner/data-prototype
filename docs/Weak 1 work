@@ -1,0 +1,144 @@
+Below are **two perfectly structured Markdown documents**, one for **Week 1** and one for **Week 2**, ready to copy-paste into:
+
+```
+/docs/week1_summary.md
+/docs/week2_summary.md
+```
+
+Both are written as **proper project documentation** — clean, precise, and fully aligned with what you built.
+
+---
+
+# ✅ **WEEK 1 SUMMARY — `docs/week1_summary.md`**
+
+```md
+# Week 1 — Project Setup, API Fetch, Reproducible Pipeline
+
+## 🎯 Objective
+Establish a fully reproducible data pipeline with:
+- a clean project structure,
+- GitHub versioning,
+- weather data ingestion via API,
+- reproducible execution in both **local PyCharm** and **Google Colab**.
+
+This week defines the *foundation* for all future ETL, EDA, ML and reporting steps.
+
+---
+
+# 1. Project Structure
+
+```
+
+data_prototype/
+│
+├── data/
+│   ├── raw/                 ← DO NOT COMMIT (gitignored)
+│   ├── processed/           ← DO NOT COMMIT (gitignored)
+│   └── proto.db             ← DO NOT COMMIT (gitignored)
+│
+├── notebooks/
+│   ├── 01_api_to_csv.ipynb
+│   ├── 02_sql_eda.ipynb     (created Week 2)
+│   └── 03_anomaly_report.ipynb (created Week 2)
+│
+├── reports/
+│   └── figures/             ← Generated plots (Week 2)
+│
+├── docs/
+│   ├── week1_summary.md
+│   └── week2_summary.md
+│
+├── .gitignore
+├── README.md
+├── requirements.txt
+└── verify_environment.py
+
+```
+
+**Why this structure?**
+- Separates *source code* from *data outputs*.
+- Keeps GitHub clean.
+- Supports Colab execution and local execution identically.
+
+---
+
+# 2. GitHub Setup
+
+### Steps performed:
+- Created repo: **mihahafner/data-prototype**
+- Cloned locally via PyCharm.
+- Configured global git identity.
+- Added `.gitignore`:
+```
+
+data/raw/
+data/processed/
+data/*.db
+
+````
+- Pushed initial commit with:
+- folder structure
+- README.md
+- requirements.txt
+- verify_environment.py
+
+---
+
+# 3. Notebook: Fetch Weather API → Save CSV
+**File:** `notebooks/01_api_to_csv.ipynb`
+
+### Key features:
+### ✔ Universal path resolver (works on local + Colab)
+
+```python
+REPO_URL = "https://github.com/mihahafner/data-prototype.git"
+def get_repo_root():
+  in_colab = "google.colab" in sys.modules
+  ...
+REPO_ROOT = get_repo_root()
+RAW = REPO_ROOT / "data" / "raw"
+````
+
+### ✔ Weather API call (Open-Meteo)
+
+* Fetch temperature, humidity, timestamps.
+* Convert JSON → pandas DataFrame.
+* Save “atomic write” CSV:
+
+  ```
+  data/raw/weather_lju.csv
+  ```
+
+### ✔ Kernel restart issues fixed
+
+* Cleaned state
+* Ensured CSV writes outside notebook working directory
+
+---
+
+# 4. Running in Google Colab
+
+### Implemented:
+
+* Auto-clone repo when notebook runs in Colab
+* Automatically set paths so CSV files save correctly
+* Successfully executed all cells
+* Verified reproducibility between:
+
+  * Windows PyCharm
+  * Google Colab environment
+
+---
+
+# 5. Final Deliverables (Week 1)
+
+* `notebooks/01_api_to_csv.ipynb`
+* `README.md` with project description
+* Reproducible pipeline that downloads weather data and writes CSV
+* Local + Colab execution fully functional
+
+---
+
+# ✔ Week 1 Completed Successfully
+
+This concludes Week 1: **You now have a fully reproducible, versioned, API-driven data ingestion pipeline.**

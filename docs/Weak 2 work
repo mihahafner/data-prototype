@@ -1,0 +1,173 @@
+
+# ✅ **WEEK 2 SUMMARY — `docs/week2_summary.md`**
+
+```md
+# Week 2 — SQL Storage, EDA, and Anomaly Detection
+
+## 🎯 Objective
+Enhance the project by:
+1. Loading raw CSV → SQLite database
+2. Performing SQL-based exploration
+3. Running EDA (plots)
+4. Detecting anomalies using machine learning
+5. Producing processed datasets + visual reports
+
+---
+
+# 1. SQL Storage (SQLite)
+
+**Notebook:** `notebooks/02_sql_eda.ipynb`
+
+Steps performed:
+
+### ✔ Loaded Weather CSV
+```python
+df = pd.read_csv("data/raw/weather_lju.csv", parse_dates=["time"])
+````
+
+### ✔ Created SQLite DB
+
+Stored at:
+
+```
+data/proto.db
+```
+
+*(gitignored)*
+
+### ✔ Wrote tables
+
+* `raw_weather`
+* `weather_clean`
+
+### ✔ SQL EDA queries run:
+
+* Hourly averages
+* Min/max temperature
+* Humidity distribution
+* Missing values check
+
+Queries executed using:
+
+```python
+con = sqlite3.connect("data/proto.db")
+pd.read_sql(...)
+```
+
+---
+
+# 2. EDA — Exploratory Data Analysis
+
+### Generated plots (saved to `reports/figures/`):
+
+* `temp_timeseries.png`
+* `temp_hist.png`
+
+Using matplotlib:
+
+```python
+df.plot(...)
+plt.savefig("reports/figures/temp_timeseries.png")
+```
+
+Plots were committed to GitHub.
+
+---
+
+# 3. Anomaly Detection
+
+**Notebook:** `notebooks/03_anomaly_report.ipynb`
+
+### ✔ Algorithm used:
+
+`IsolationForest`
+
+* Detects unusually high/low temperatures
+* Produces anomaly score
+* Flags anomalous points (`is_anomaly = True/False`)
+
+### ✔ Process flow:
+
+1. Load processed data
+2. Fit IsolationForest
+3. Append anomaly columns
+4. Filter anomaly rows
+5. Save outputs:
+
+   ```
+   data/processed/weather_lju_processed.csv
+   data/processed/weather_lju_anomalies.csv
+   ```
+
+### ✔ Visualization of anomalies:
+
+`temp_anomalies.png`
+
+* Normal points (line)
+* Red dots = anomalies
+
+---
+
+# 4. Reports + Output Files
+
+### Saved in:
+
+```
+reports/figures/
+    temp_timeseries.png
+    temp_hist.png
+    temp_anomalies.png
+```
+
+### Processed datasets:
+
+```
+data/processed/weather_lju_processed.csv
+data/processed/weather_lju_anomalies.csv
+```
+
+*(not committed due to .gitignore — correct)*
+
+---
+
+# 5. Git Workflow for Week 2
+
+Committed and pushed:
+
+* Updated notebooks
+* All plots under `reports/figures/`
+* Documentation files
+
+Not committed (correct):
+
+* processed CSVs
+* proto.db
+
+---
+
+# ✔ Week 2 Completed Successfully
+
+At the end of Week 2, your project includes:
+
+* A SQLite-backed clean dataset
+* SQL query examples
+* Full EDA visualizations
+* A working anomaly detection model
+* A formal anomaly report notebook
+* Reproducible outputs
+
+You now have a fully operational **ETL → SQL → EDA → ML anomaly detection** pipeline.
+
+```
+
+---
+
+# ✅ Ready for Next Steps
+
+If you want, I can also generate:
+
+📌 `docs/architecture_overview.md`
+📌 `docs/data_flow_diagram.md`
+📌 `docs/week3_plan.md`
+
+Just tell me **“Generate Week 3 plan”** or **“Give me architecture diagrams.”**

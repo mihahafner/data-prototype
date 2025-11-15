@@ -1,9 +1,15 @@
-Here is a **professional, complete, reproducible Week 1 summary** for your README.md.
-You can **copy–paste the entire block** into your README.
 
-I wrote it in the style used in real ML engineering teams: clear system architecture, components, execution flow, reproducibility, and collaboration notes.
+data_prototype/
+├── data/
+│   └── processed/weather_lju_anomalies.csv
+├── tools/
+│   └── s3_publish.py
+├── requirements.txt
+├── README.md                ← week summary
+└── README_s3_publish.md     ← tool-specific readme
 
----
+
+
 
 # ✅ **WEEK 1 — PROJECT FOUNDATION & REPRODUCIBLE DATA INGESTION PIPELINE**
 
