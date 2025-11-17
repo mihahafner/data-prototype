@@ -1,15 +1,19 @@
-# Ignore local raw data files (CSV not tracked)
-data/raw/*.csv
-!data/raw/.gitkeep
-
-# Ignore Jupyter temporary checkpoints
-**/.ipynb_checkpoints/
-
-# Ignore environment-specific folders
+# virtual env
 .venv/
-.vscode/
-.idea/
+__pycache__/
+*.pyc
 
-# Ignore OS files
+# user data
+data/raw/
+data/processed/
+data/proto.db
+
+# notebooks cache
+.notebooks/
+
+# OS & editor files
 .DS_Store
 Thumbs.db
+
+# secrets
+.env

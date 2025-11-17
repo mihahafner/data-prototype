@@ -1,0 +1,40 @@
+### ▶️ End-to-end pipeline
+Runs API → CSV → SQLite → anomalies → S3 (public) → summary.
+
+```bash
+# Windows (PowerShell)
+$env:AWS_PROFILE="data-prototype-uploader"
+python tools/run_end_to_end.py
+
+# macOS/Linux
+AWS_PROFILE=data-prototype-uploader python tools/run_end_to_end.py
+
+
+
+**Check**
+Render README on GitHub; commands run as documented.
+
+---
+
+# 5) Convenience runner (optional)
+
+**Where**
+Pick one:
+- `Makefile` (Unix/WSL) **or**
+- `tools/run.ps1` (PowerShell)
+
+**What**
+Shortcuts to run the pipeline with a profile.
+
+**How**
+**Makefile**
+```make
+run:
+	@AWS_PROFILE?=data-prototype-uploader
+	@AWS_PROFILE=$(AWS_PROFILE) python tools/run_end_to_end.py
+
+
+param([string]$Profile="data-prototype-uploader")
+$env:AWS_PROFILE=$Profile
+python tools/run_end_to_end.py
+
