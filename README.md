@@ -1,12 +1,93 @@
 
+
+## 🚀 Final release – v0.1-proto
+
+This release packages an end-to-end weather data prototype:
+
+- **GitHub repo**  
+  - Code, notebooks, Docker setup:  
+    - Repository: https://github.com/mihahafner/data-prototype
+
+- **Cloud dataset (S3)**  
+  - Processed anomalies CSV (public):  
+    - https://mihah-weather-data.s3.eu-north-1.amazonaws.com/processed/weather_lju_anomalies.csv
+
+- **Interactive notebooks (Colab)**  
+  - API → CSV:  
+    - https://colab.research.google.com/github/mihahafner/data-prototype/blob/main/notebooks/01_api_to_csv.ipynb
+  - SQL EDA:  
+    - https://colab.research.google.com/github/mihahafner/data-prototype/blob/main/notebooks/02_sql_eda.ipynb
+  - Anomaly report:  
+    - https://colab.research.google.com/github/mihahafner/data-prototype/blob/main/notebooks/03_anomaly_report.ipynb
+
+- **Dashboard (Looker Studio)**  
+  - Weather anomalies dashboard:  
+    - <PUT-YOUR-LOOKER-STUDIO-LINK-HERE>
+
+- **Docker (reproducible environment)**  
+  - Start JupyterLab:
+    ```bash
+    docker compose up --build jupyter
+    ```
+    → then open http://localhost:8888/lab
+  - Run full pipeline (API → CSV → DB → anomalies → S3):
+    ```bash
+    docker compose run --rm pipeline
+    ```
+
+## 🗺 Roadmap
+
+Planned improvements for future versions:
+
+- v0.2 – Code structure
+  - Move pipeline logic from notebooks into `src/` Python modules.
+  - Add basic unit tests for API fetch + anomaly detection.
+  - Add a simple CLI entry point (e.g. `python -m data_prototype.run`).
+
+- v0.3 – Analytics & dashboards
+  - Extend anomaly features (e.g. rolling stats, weather condition categories).
+  - Add more visualisations and derived metrics to the dashboard.
+  - Optionally add Power BI template alongside Looker Studio.
+
+- v1.0 – Production-style
+  - CI checks (lint + tests) on every push.
+  - Better configuration management (.env, config files).
+  - Documentation cleanup and “How to deploy” guide.
+
+
+
 data_prototype/
+│
+├── .github/
+│   └── workflows/
+│       └── daily-pipeline.yml
+│
 ├── data/
-│   └── processed/weather_lju_anomalies.csv
+│   ├── raw/
+│   ├── processed/
+│   └── proto.db
+│
+├── docker/
+│   ├── Dockerfile.jupyter
+│   └── Dockerfile.pipeline
+│
+├── notebooks/
+│   ├── 01_api_to_csv.ipynb
+│   └── 02_sql_eda.ipynb
+│
+├── src/
+│   ├── api.py
+│   ├── transform.py
+│   ├── s3_upload.py
+│   └── config.py
+│
 ├── tools/
-│   └── s3_publish.py
+│   └── run_end_to_end.py
+│
+├── docker-compose.yml
 ├── requirements.txt
-├── README.md                ← week summary
-└── README_s3_publish.md     ← tool-specific readme
+├── README.md
+└── .gitignore
 
 
 
